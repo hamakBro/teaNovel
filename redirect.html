@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redirecting...</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Redirecting...</h1>
+    <p id="message">If you are not redirected automatically, <a href="#" id="fallback-link">click here</a>.</p>
+
+    <script>
+        function getQueryParams() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const token = urlParams.get('token');
+            const tokenId = urlParams.get('tokenId');
+            return { token, tokenId };
+        }
+
+        function redirectToApp() {
+            const params = getQueryParams();
+            if (params.token && params.tokenId) {
+                // Construct the custom URI scheme
+                const customUri = `teaNovel://token=${params.token}&tokenId=${params.tokenId}`;
+                
+                // Attempt to redirect to the custom URI scheme
+                window.location.href = customUri;
+
+                // Provide a fallback link in case the redirect fails
+                document.getElementById('fallback-link').href = customUri;
+                document.getElementById('message').textContent = 'Redirecting you to the app...';
+            } else {
+                document.getElementById('message').textContent = 'Invalid reset link.';
+            }
+        }
+
+        // Call the redirect function
+        redirectToApp();
+    </script>
+</body>
+</html>
