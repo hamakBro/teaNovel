@@ -3,11 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Not Found</title>
+    <title>Page Not Found</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Page Not Found</h1>
-    <p>The page you are looking for does not exist. Please check the URL or go back to the <a href="/">homepage</a>.</p>
-    <script src="js/main.js"></script>
+    <h1>404 - Page Not Found</h1>
+    <p id="message">Redirecting...</p>
+
+    <script>
+        function getQueryParams() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const token = urlParams.get('token');
+            const tokenId = urlParams.get('tokenId');
+            return { token, tokenId };
+        }
+
+        function redirectToReset() {
+            const params = getQueryParams();
+            if (params.token && params.tokenId) {
+                // Redirect to the appropriate URL or handle the reset logic
+                window.location.href = `/teaNovel/index.html?token=${params.token}&tokenId=${params.tokenId}`;
+            } else {
+                document.getElementById('message').textContent = 'Invalid reset link.';
+            }
+        }
+
+        redirectToReset();
+    </script>
 </body>
 </html>
