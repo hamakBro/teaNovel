@@ -10,11 +10,18 @@
             text-align: center;
             margin-top: 50px;
         }
+        button {
+            font-size: 16px;
+            padding: 10px 20px;
+            margin-top: 20px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
     <h1>Redirecting...</h1>
-    <p id="message">If you are not redirected automatically, <a href="#" id="fallback-link">click here</a>.</p>
+    <p id="message">If you are not redirected automatically, click the button below.</p>
+    <button id="open-app">Open App</button>
 
     <script>
         function getQueryParams() {
@@ -33,11 +40,17 @@
                 // Attempt to redirect to the custom URI scheme
                 window.location.href = customUri;
 
-                // Provide a fallback link in case the redirect fails
-                document.getElementById('fallback-link').href = customUri;
-                document.getElementById('message').textContent = 'Redirecting you to the app...';
+                // Handle click event to open the app
+                document.getElementById('open-app').onclick = function() {
+                    window.location.href = customUri;
+                };
+                
+                // Provide a fallback message
+                document.getElementById('message').textContent = 'Click the button below to open the app.';
+
             } else {
                 document.getElementById('message').textContent = 'Invalid reset link.';
+                document.getElementById('open-app').style.display = 'none'; // Hide button if no token
             }
         }
 
