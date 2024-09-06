@@ -10,18 +10,26 @@
             text-align: center;
             margin-top: 50px;
         }
-        button {
-            font-size: 16px;
+        .button {
+            display: inline-block;
             padding: 10px 20px;
-            margin-top: 20px;
+            font-size: 16px;
+            color: white;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
             cursor: pointer;
+            text-decoration: none;
+        }
+        .button:hover {
+            background-color: #0056b3;
         }
     </style>
 </head>
 <body>
     <h1>Redirecting...</h1>
-    <p id="message">If you are not redirected automatically, click the button below.</p>
-    <button id="open-app">Open App</button>
+    <p id="message">If you are not redirected automatically, click the button below to open the app.</p>
+    <a id="open-app-button" class="button" href="#">Open App</a>
 
     <script>
         function getQueryParams() {
@@ -33,24 +41,27 @@
 
         function redirectToApp() {
             const params = getQueryParams();
+            const customUri = `teaNovel://token=${params.token}&tokenId=${params.tokenId}`;
+
             if (params.token && params.tokenId) {
-                // Construct the custom URI scheme
-                const customUri = `teaNovel://token=${params.token}&tokenId=${params.tokenId}`;
+                // Attempt to open the custom URI scheme
+                const button = document.getElementById('open-app-button');
+                button.href = customUri;
+                button.style.display = 'inline-block';
+                button.textContent = 'Open App';
                 
-                // Attempt to redirect to the custom URI scheme
+                // Attempt to open the custom URI
                 window.location.href = customUri;
 
-                // Handle click event to open the app
-                document.getElementById('open-app').onclick = function() {
-                    window.location.href = customUri;
-                };
-                
-                // Provide a fallback message
-                document.getElementById('message').textContent = 'Click the button below to open the app.';
-
+                // Fallback in case the automatic redirect does not work
+                setTimeout(() => {
+                    if (document.hidden) {
+                        button.style.display = 'inline-block';
+                        document.getElementById('message').textContent = 'If the app did not open, click the button below.';
+                    }
+                }, 2000); // Adjust timeout as needed
             } else {
                 document.getElementById('message').textContent = 'Invalid reset link.';
-                document.getElementById('open-app').style.display = 'none'; // Hide button if no token
             }
         }
 
