@@ -35,24 +35,23 @@
             const messageElement = document.getElementById('message');
             
             if (params.token && params.tokenId) {
-                // Here you can implement further logic, e.g., sending these to your backend
-                messageElement.textContent = `Processing reset token...`;
-                // You can send the token to the server or display a form
-                // For example, send a request to your MongoDB backend to verify the token
-                fetch(`https://your-backend-url.com/reset-password?token=${params.token}&tokenId=${params.tokenId}`)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        messageElement.textContent = 'Token is valid, please reset your password!';
-                        // Here you can show a password reset form
-                    } else {
-                        messageElement.textContent = 'Invalid or expired token!';
-                    }
-                })
-                .catch(error => {
-                    messageElement.textContent = 'Error processing your request!';
-                    console.error(error);
-                });
+                // Display the tokens (for debugging)
+                messageElement.textContent = `Token: ${params.token}, Token ID: ${params.tokenId}`;
+                // You can send these tokens to your backend for verification
+                // Example:
+                // fetch(`https://your-backend-url.com/reset-password?token=${params.token}&tokenId=${params.tokenId}`)
+                // .then(response => response.json())
+                // .then(data => {
+                //     if (data.success) {
+                //         messageElement.textContent = 'Token is valid, please reset your password!';
+                //     } else {
+                //         messageElement.textContent = 'Invalid or expired token!';
+                //     }
+                // })
+                // .catch(error => {
+                //     messageElement.textContent = 'Error processing your request!';
+                //     console.error(error);
+                // });
             } else {
                 messageElement.textContent = 'Invalid reset link. Please try again.';
             }
