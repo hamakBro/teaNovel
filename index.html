@@ -3,10 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tea Novel</title>
+    <title>Reset Password</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            margin-top: 50px;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-    <h1>Welcome to Tea Novel!</h1>
-    <p>This is the homepage for the Tea Novel GitHub Pages site.</p>
+    <div class="container">
+        <h1>Password Reset</h1>
+        <p id="message">Loading...</p>
+    </div>
+
+    <script>
+        // Function to get query parameters from the URL
+        function getQueryParams() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const token = urlParams.get('token');
+            const tokenId = urlParams.get('tokenId');
+            return { token, tokenId };
+        }
+
+        // Function to handle the token and tokenId
+        function handleResetLink() {
+            const params = getQueryParams();
+            const messageElement = document.getElementById('message');
+            
+            if (params.token && params.tokenId) {
+                // Here you can implement further logic, e.g., sending these to your backend
+                messageElement.textContent = `Processing reset token...`;
+                // You can send the token to the server or display a form
+                // For example, send a request to your MongoDB backend to verify the token
+                fetch(`https://your-backend-url.com/reset-password?token=${params.token}&tokenId=${params.tokenId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        messageElement.textContent = 'Token is valid, please reset your password!';
+                        // Here you can show a password reset form
+                    } else {
+                        messageElement.textContent = 'Invalid or expired token!';
+                    }
+                })
+                .catch(error => {
+                    messageElement.textContent = 'Error processing your request!';
+                    console.error(error);
+                });
+            } else {
+                messageElement.textContent = 'Invalid reset link. Please try again.';
+            }
+        }
+
+        // Call the function to handle the reset link
+        handleResetLink();
+    </script>
 </body>
 </html>
