@@ -3,25 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reset Password</title>
+    <title>Redirecting...</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-        }
-        .container {
-            margin-top: 50px;
             text-align: center;
+            margin-top: 50px;
+        }
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: white;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .button:hover {
+            background-color: #0056b3;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Password Reset</h1>
-        <p id="message">Loading...</p>
-    </div>
+    <h1>Redirecting...</h1>
+    <p id="message">If you are not redirected automatically, click the button below to open the app.</p>
+    <a id="open-app-button" class="button" href="#">Open App</a>
 
     <script>
-        // Function to get query parameters from the URL
         function getQueryParams() {
             const urlParams = new URLSearchParams(window.location.search);
             const token = urlParams.get('token');
@@ -29,39 +39,34 @@
             return { token, tokenId };
         }
 
-        // Function to handle the token and tokenId
-        function handleResetLink() {
+        function redirectToApp() {
             const params = getQueryParams();
-            const messageElement = document.getElementById('message');
-            
+            const customUri = `teaNovel://token=${params.token}&tokenId=${params.tokenId}`;
+
             if (params.token && params.tokenId) {
-                // Here you can display the token and tokenId or use them
-                messageElement.textContent = `Token: ${params.token}, Token ID: ${params.tokenId}`;
-                // Example of a real-world scenario:
-                // Send the token and tokenId to your backend for processing
-                /*
-                fetch(`https://your-backend-url.com/reset-password?token=${params.token}&tokenId=${params.tokenId}`)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        messageElement.textContent = 'Token is valid, please reset your password!';
-                        // Show a password reset form here if needed
-                    } else {
-                        messageElement.textContent = 'Invalid or expired token!';
+                // Attempt to open the custom URI scheme
+                const button = document.getElementById('open-app-button');
+                button.href = customUri;
+                button.style.display = 'inline-block';
+                button.textContent = 'Open App';
+                
+                // Attempt to open the custom URI
+                window.location.href = customUri;
+
+                // Fallback in case the automatic redirect does not work
+                setTimeout(() => {
+                    if (document.hidden) {
+                        button.style.display = 'inline-block';
+                        document.getElementById('message').textContent = 'If the app did not open, click the button below.';
                     }
-                })
-                .catch(error => {
-                    messageElement.textContent = 'Error processing your request!';
-                    console.error(error);
-                });
-                */
+                }, 2000); // Adjust timeout as needed
             } else {
-                messageElement.textContent = 'Invalid reset link. Please try again.';
+                document.getElementById('message').textContent = 'Invalid reset link.';
             }
         }
 
-        // Call the function to handle the reset link
-        handleResetLink();
+        // Call the redirect function
+        redirectToApp();
     </script>
 </body>
 </html>
