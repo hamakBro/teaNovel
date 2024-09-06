@@ -35,23 +35,26 @@
             const messageElement = document.getElementById('message');
             
             if (params.token && params.tokenId) {
-                // Display the tokens (for debugging)
+                // Here you can display the token and tokenId or use them
                 messageElement.textContent = `Token: ${params.token}, Token ID: ${params.tokenId}`;
-                // You can send these tokens to your backend for verification
-                // Example:
-                // fetch(`https://your-backend-url.com/reset-password?token=${params.token}&tokenId=${params.tokenId}`)
-                // .then(response => response.json())
-                // .then(data => {
-                //     if (data.success) {
-                //         messageElement.textContent = 'Token is valid, please reset your password!';
-                //     } else {
-                //         messageElement.textContent = 'Invalid or expired token!';
-                //     }
-                // })
-                // .catch(error => {
-                //     messageElement.textContent = 'Error processing your request!';
-                //     console.error(error);
-                // });
+                // Example of a real-world scenario:
+                // Send the token and tokenId to your backend for processing
+                /*
+                fetch(`https://your-backend-url.com/reset-password?token=${params.token}&tokenId=${params.tokenId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        messageElement.textContent = 'Token is valid, please reset your password!';
+                        // Show a password reset form here if needed
+                    } else {
+                        messageElement.textContent = 'Invalid or expired token!';
+                    }
+                })
+                .catch(error => {
+                    messageElement.textContent = 'Error processing your request!';
+                    console.error(error);
+                });
+                */
             } else {
                 messageElement.textContent = 'Invalid reset link. Please try again.';
             }
