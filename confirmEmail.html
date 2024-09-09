@@ -27,7 +27,7 @@
     </style>
 </head>
 <body>
-    <h1>Redirecting...</h1>
+    <h1>جار إعادة التوجيه...</h1>
     <p id="message">إذا لم يتم إعادة توجيهك تلقائيًا، فانقر فوق الزر أدناه لفتح التطبيق.</p>
     <a id="open-app-button" class="button" href="#">فتح التطبيق</a>
 
@@ -48,7 +48,7 @@
                 const button = document.getElementById('open-app-button');
                 button.href = customUri;
                 button.style.display = 'inline-block';
-                button.textContent = 'Open App';
+                button.textContent = 'فتح التطبيق';
                 
                 // Attempt to open the custom URI
                 window.location.href = customUri;
