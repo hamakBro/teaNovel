@@ -1,1 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تأكيد البريد الإلكتروني</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: white;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Redirecting...</h1>
+    <p id="message">إذا لم يتم إعادة توجيهك تلقائيًا، فانقر فوق الزر أدناه لفتح التطبيق.</p>
+    <a id="open-app-button" class="button" href="#">فتح التطبيق</a>
 
+    <script>
+        function getQueryParams() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const token = urlParams.get('token');
+            const tokenId = urlParams.get('tokenId');
+            return { token, tokenId };
+        }
+
+        function redirectToApp() {
+            const params = getQueryParams();
+            const customUri = `teaNovel://confirmEmail/token=${params.token}&tokenId=${params.tokenId}`;
+
+            if (params.token && params.tokenId) {
+                // Attempt to open the custom URI scheme
+                const button = document.getElementById('open-app-button');
+                button.href = customUri;
+                button.style.display = 'inline-block';
+                button.textContent = 'Open App';
+                
+                // Attempt to open the custom URI
+                window.location.href = customUri;
+
+                // Fallback in case the automatic redirect does not work
+                setTimeout(() => {
+                    if (document.hidden) {
+                        button.style.display = 'inline-block';
+                        document.getElementById('message').textContent = 'إذا لم يفتح التطبيق، انقر على الزر أدناه.';
+                    }
+                }, 2000); // Adjust timeout as needed
+            } else {
+                document.getElementById('message').textContent = 'Invalid reset link.';
+            }
+        }
+
+        // Call the redirect function
+        redirectToApp();
+    </script>
+</body>
+</html>
