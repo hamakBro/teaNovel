@@ -1,1 +1,74 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تأكيد البريد الإلكتروني</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 50px;
+    }
+    .button {
+      display: inline-block;
+      padding: 10px 20px;
+      font-size: 16px;
+      color: white;
+      background-color: #007bff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <h1>جار إعادة التوجيه...</h1>
+  <p id="message">إذا لم يتم إعادة توجيهك تلقائيًا، فانقر فوق الزر أدناه لفتح التطبيق.</p>
+  <a id="open-app-button" class="button" href="#">فتح التطبيق</a>
 
+  <script>
+    function getQueryParams() {
+      const urlParams = new URLSearchParams(window.location.search);
+      // Appwrite sends userId and secret in the verification URL
+      const userId = urlParams.get('userId');
+      const secret = urlParams.get('secret');
+      return { userId, secret };
+    }
+
+    function redirectToApp() {
+      const params = getQueryParams();
+      if (params.userId && params.secret) {
+        // Construct your custom URI scheme. Adjust the scheme and path as needed.
+        const customUri = `teaNovel://confirmEmail?userId=${params.userId}&secret=${params.secret}`;
+
+        // Update button and attempt auto-redirect
+        const button = document.getElementById('open-app-button');
+        button.href = customUri;
+        button.style.display = 'inline-block';
+        button.textContent = 'فتح التطبيق';
+
+        // Attempt to open the app via deep link
+        window.location.href = customUri;
+
+        // Fallback in case the auto-redirect doesn't work
+        setTimeout(() => {
+          if (document.hidden === false) {
+            button.style.display = 'inline-block';
+            document.getElementById('message').textContent = 'إذا لم يفتح التطبيق، انقر على الزر أدناه.';
+          }
+        }, 2000);
+      } else {
+        document.getElementById('message').textContent = 'رابط التحقق غير صالح.';
+      }
+    }
+
+    // Trigger the redirect function on page load
+    redirectToApp();
+  </script>
+</body>
+</html>
